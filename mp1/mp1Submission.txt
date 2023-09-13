@@ -22,9 +22,14 @@ public class calc {
         this.scanner = new Scanner(System.in);
     }
 
-    public void findPickFunction() {
+    public String getName() {
         Thread.currentThread().setName("mycalc.group 28");
-        System.out.println("Welcome to the Calculator designed by " + Thread.currentThread().getName());
+        return Thread.currentThread().getName();
+    }
+
+    public void findPickFunction() {
+
+        System.out.println("Welcome to the Calculator designed by " + this.getName());
         System.out.println("Enter A to Add, S to Subtract, M to Multiply, and Q to quit.");
         validInput = true;
         // take user input
@@ -37,16 +42,16 @@ public class calc {
             if (userChar == 'A') {
                 this.fullArgument = "sum";
                 takeBothInputs();
-                this.Add();
+                this.finalArg = this.Add();
             } else if (userChar == 'S') {
                 this.fullArgument = "difference";
                 takeBothInputs();
-                this.Subtract();
+                this.finalArg = this.Subtract();
                 // scanner.close();
             } else if (userChar == 'M') {
                 this.fullArgument = "product";
                 takeBothInputs();
-                this.Multiply();
+                this.finalArg = this.Multiply();
                 // scanner.close();
             } else if (userChar == 'Q') {
                 this.continueRunning = false;
@@ -69,18 +74,18 @@ public class calc {
 
     }
 
-    public void Add() {
-        this.finalArg = this.arg1 + this.arg2;
+    public float Add() {
+        return this.arg1 + this.arg2;
 
     }
 
-    public void Subtract() {
+    public float Subtract() {
 
-        this.finalArg = this.arg1 - this.arg2;
+        return this.arg1 - this.arg2;
     }
 
-    public void Multiply() {
-        this.finalArg = this.arg1 * this.arg2;
+    public float Multiply() {
+        return this.arg1 * this.arg2;
 
     }
 

@@ -11,7 +11,6 @@ public class main {
         });
 
         // Set the thread's name
-        
 
         // Start the thread
         myThread.start();
