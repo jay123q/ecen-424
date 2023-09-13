@@ -37,16 +37,16 @@ public class calc {
             if (userChar == 'A') {
                 this.fullArgument = "sum";
                 takeBothInputs();
-                this.Add();
+                this.finalArg = this.arg1 + this.arg2;
             } else if (userChar == 'S') {
                 this.fullArgument = "difference";
                 takeBothInputs();
-                this.Subtract();
+                this.finalArg = this.arg1 - this.arg2;
                 // scanner.close();
             } else if (userChar == 'M') {
                 this.fullArgument = "product";
                 takeBothInputs();
-                this.Multiply();
+                this.finalArg = this.arg1 * this.arg2;
                 // scanner.close();
             } else if (userChar == 'Q') {
                 this.continueRunning = false;
@@ -69,21 +69,6 @@ public class calc {
 
     }
 
-    public void Add() {
-        this.finalArg = this.arg1 + this.arg2;
-
-    }
-
-    public void Subtract() {
-
-        this.finalArg = this.arg1 - this.arg2;
-    }
-
-    public void Multiply() {
-        this.finalArg = this.arg1 * this.arg2;
-
-    }
-
     public void takeBothInputs() {
 
         // Scanner takeBothInputsScanner = new Scanner(System.in);
@@ -93,7 +78,7 @@ public class calc {
         // boolean print = true;
         try {
             // Attempt to convert the user input to an integer
-            if (userInput.matches("-?\\d+")) {
+            if (userInput.matches("\\d+")) {
                 // print = false;
                 this.arg1 = Float.parseFloat(userInput);
                 // caught a char insererd
@@ -114,7 +99,7 @@ public class calc {
         userInput = this.scanner.nextLine();
         try {
             // Attempt to convert the user input to an integer
-            if (userInput.matches("-?\\d+")) {
+            if (userInput.matches("\\d+")) {
                 // print = false;
                 this.arg2 = Float.parseFloat(userInput);
                 // caught a char insererd
@@ -137,3 +122,38 @@ public class calc {
     // Getters and setters for fields (if needed)
 
 }
+package mp1;
+
+import mp1.calc;
+
+public class main {
+    public static void main(String[] args) {
+
+        Thread myThread = new Thread(() -> {
+            // Inside the thread's run method
+            // System.out.println("Thread name: " + Thread.currentThread().getName());
+        });
+
+        // Set the thread's name
+        
+
+        // Start the thread
+        myThread.start();
+        calc myCalc = new calc();
+        // myCalc.cal
+        while (myCalc.continueRunning == true) {
+            myCalc.findPickFunction();
+        }
+        // myCalc.scanner.close();
+        // Wait for the thread to finish
+        try {
+            myThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Outside the thread
+
+    }
+}
+
