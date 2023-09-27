@@ -33,7 +33,7 @@ public class MatrixMultiplication {
         System.out.print(" PRINT MATRIX A \n");
         for (int i = 0; i < matrixSize; i++) {
             for (int j = 0; j < matrixSize; j++) {
-                if (j < 19) {
+                if (j < matrixSize - 1) {
                     System.out.print(matrixA[i][j] + ",");
                 } else {
                     System.out.print(matrixA[i][j]);
@@ -46,7 +46,7 @@ public class MatrixMultiplication {
         System.out.print(" PRINT MATRIX B \n ");
         for (int i = 0; i < matrixSize; i++) {
             for (int j = 0; j < matrixSize; j++) {
-                if (j < 19) {
+                if (j < matrixSize - 1) {
                     System.out.print(matrixB[i][j] + ",");
                 } else {
                     System.out.print(matrixB[i][j]);
