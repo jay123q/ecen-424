@@ -1,19 +1,19 @@
 import java.util.Random;
 
 public class MatrixMultiplication {
-    private static final int MATRIX_SIZE = 20;
-    private static final int NUM_THREADS = 5;
+    private static final int matrixSize = 20;
+    private static final int threadNum = 5;
 
-    private static int[][] matrixA = new int[MATRIX_SIZE][MATRIX_SIZE];
-    private static int[][] matrixB = new int[MATRIX_SIZE][MATRIX_SIZE];
-    private static int[][] resultMatrix = new int[MATRIX_SIZE][MATRIX_SIZE];
+    private static int[][] matrixA = new int[matrixSize][matrixSize];
+    private static int[][] matrixB = new int[matrixSize][matrixSize];
+    private static int[][] matrixFinal = new int[matrixSize][matrixSize];
 
     public static void matrixMultiplication(int startRow, int endRow) {
         for (int i = startRow; i < endRow; i++) {
-            for (int j = 0; j < MATRIX_SIZE; j++) {
-                for (int k = 0; k < MATRIX_SIZE; k++) {
+            for (int j = 0; j < matrixSize; j++) {
+                for (int k = 0; k < matrixSize; k++) {
                     // i j for the final proper, then ik shows normal and ib is the proper mult
-                    resultMatrix[i][j] += matrixA[i][k] * matrixB[k][j];
+                    matrixFinal[i][j] += matrixA[i][k] * matrixB[k][j];
                 }
             }
         }
@@ -23,16 +23,16 @@ public class MatrixMultiplication {
         // RANDOMIZE THIS
         Random random = new Random();
 
-        for (int i = 0; i < MATRIX_SIZE; i++) {
-            for (int j = 0; j < MATRIX_SIZE; j++) {
-                // need some bound, I picked 10
-                matrixA[i][j] = random.nextInt(10) + 1;
-                matrixB[i][j] = random.nextInt(10) + 1;
+        for (int i = 0; i < matrixSize; i++) {
+            for (int j = 0; j < matrixSize; j++) {
+
+                matrixA[i][j] = random.nextInt(11); // 0-10
+                matrixB[i][j] = random.nextInt(11);
             }
         }
         System.out.print(" PRINT MATRIX A \n");
-        for (int i = 0; i < MATRIX_SIZE; i++) {
-            for (int j = 0; j < MATRIX_SIZE; j++) {
+        for (int i = 0; i < matrixSize; i++) {
+            for (int j = 0; j < matrixSize; j++) {
                 if (j < 19) {
                     System.out.print(matrixA[i][j] + ",");
                 } else {
@@ -44,8 +44,8 @@ public class MatrixMultiplication {
         }
 
         System.out.print(" PRINT MATRIX B \n ");
-        for (int i = 0; i < MATRIX_SIZE; i++) {
-            for (int j = 0; j < MATRIX_SIZE; j++) {
+        for (int i = 0; i < matrixSize; i++) {
+            for (int j = 0; j < matrixSize; j++) {
                 if (j < 19) {
                     System.out.print(matrixB[i][j] + ",");
                 } else {
@@ -56,12 +56,12 @@ public class MatrixMultiplication {
             System.out.println();
         }
 
-        Thread[] threads = new Thread[NUM_THREADS];
+        Thread[] threads = new Thread[threadNum];
 
-        for (int i = 0; i < NUM_THREADS; i++) {
+        for (int i = 0; i < threadNum; i++) {
 
-            int startRow = i * (MATRIX_SIZE / NUM_THREADS); // i * 4 = 0
-            int endRow = (i + 1) * (MATRIX_SIZE / NUM_THREADS); // (i+1)*4 = 4
+            int startRow = i * (matrixSize / threadNum); // i * 4 = 0
+            int endRow = (i + 1) * (matrixSize / threadNum); // (i+1)*4 = 4
             threads[i] = new Thread(() -> matrixMultiplication(startRow, endRow));
             threads[i].start();
         }
@@ -75,9 +75,9 @@ public class MatrixMultiplication {
         }
 
         System.out.print(" PRINT FINAL MATRIX \n");
-        for (int i = 0; i < MATRIX_SIZE; i++) {
-            for (int j = 0; j < MATRIX_SIZE; j++) {
-                System.out.print(resultMatrix[i][j] + " ");
+        for (int i = 0; i < matrixSize; i++) {
+            for (int j = 0; j < matrixSize; j++) {
+                System.out.print(matrixFinal[i][j] + " ");
             }
             System.out.println();
         }
