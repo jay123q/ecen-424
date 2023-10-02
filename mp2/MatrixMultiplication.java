@@ -8,14 +8,15 @@ public class MatrixMultiplication {
     private static int[][] matrixB = new int[matrixSize][matrixSize];
     private static int[][] matrixFinal = new int[matrixSize][matrixSize];
 
-    public static void matrixMultiplication(int startRow, int endRow) {
-        for (int i = startRow; i < endRow; i++) {
+    public static void matrixMultiplication(int i, int endRow) {
+        while (i != endRow) {
             for (int j = 0; j < matrixSize; j++) {
                 for (int k = 0; k < matrixSize; k++) {
                     // i j for the final proper, then ik shows normal and ib is the proper mult
                     matrixFinal[i][j] += matrixA[i][k] * matrixB[k][j];
                 }
             }
+            i++;
         }
     }
 
