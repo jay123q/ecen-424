@@ -44,7 +44,7 @@ public class MatrixMultiplication {
             System.out.println();
         }
 
-        System.out.print(" PRINT MATRIX B \n ");
+        System.out.print(" PRINT MATRIX B \n");
         for (int i = 0; i < matrixSize; i++) {
             for (int j = 0; j < matrixSize; j++) {
                 if (j < matrixSize - 1) {
@@ -60,7 +60,8 @@ public class MatrixMultiplication {
         Thread[] threads = new Thread[threadNum];
 
         for (int i = 0; i < threadNum; i++) {
-
+            // 20, 10 works must be base 10 since int rounding could ocur and what happens
+            // if one thread gets 3 and another gets 2?, they wont, and math goes wild
             int startRow = i * (matrixSize / threadNum); // i * 4 = 0
             int endRow = (i + 1) * (matrixSize / threadNum); // (i+1)*4 = 4
             threads[i] = new Thread(() -> matrixMultiplication(startRow, endRow));
