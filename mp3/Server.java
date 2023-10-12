@@ -14,7 +14,7 @@ public class Server {
 
         System.out.print("Enter server port: ");
         int serverPort = scanner.nextInt();
-        serverPort = 51;
+        serverPort = 51123;
 
         System.out.print("Enter the maximum number of clients: ");
         int maxClients = scanner.nextInt();
@@ -97,6 +97,7 @@ class ClientHandler implements Runnable {
 
             clientSocket.close();
             running = false;
+            Server.clientCount--;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
