@@ -47,7 +47,7 @@ public class NativeClient {
             }
             clientSocket.close();
         } catch (IOException e) {
-            runConnect(clientSocket, IP, serverPort + 1);
+            // runConnect(clientSocket, IP, serverPort++);
 
         }
     }

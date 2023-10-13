@@ -41,34 +41,37 @@ public class Server {
         while (true) {
 
             while (clientCount < maxClients) {
-                System.out.printf(" the amount of clients BEFORE threads %d \n", clientCount);
+                // System.out.printf(" the amount of clients BEFORE threads %d \n",
+                // clientCount);
                 runServer(serverPort, strToSend, repetitions);
-                System.out.printf(" the amount of clients AFTER threads %d \n", clientCount);
+                // System.out.printf(" the amount of clients AFTER threads %d \n", clientCount);
 
             }
             System.out.println(" figure where stralled \n ");
+            serverPort++;
         }
     }
 
     public static void runServer(int serverPort, String strToSend, int repetitions) {
 
         try {
-            System.out.printf("Server Port is: %d \n", serverPort);
+            // System.out.printf("Server Port is: %d \n", serverPort);
             ServerSocket serverSocket = new ServerSocket(serverPort);
             // PortCheckList.add(serverPort);
+            serverPort++;
             Socket clientSocket = serverSocket.accept();
             clientCount++;
-            System.out.printf(" count client threads increment %d \n", clientCount);
+            // System.out.printf(" count client threads increment %d \n", clientCount);
             System.out.println("Accepted connection from " + clientSocket.getInetAddress());
             ClientHandler clientHandler = new ClientHandler(clientSocket, strToSend, repetitions);
-            clientHandler.run();
-            clientHandler.stop();
+            // clientHandler.run();
             // new Thread(clientHandler).start();
-            System.out.printf("\n\n ended thread currently running clients = %d \n\n", serverPort);
+            // System.out.printf("\n\n ended thread currently running clients = %d \n\n",
+            // serverPort);
         } catch (IOException e) {
             // e.printStackTrace();
-            System.out.printf(" port collison @ %d \n", serverPort);
-            runServer(serverPort + 1, strToSend, repetitions);
+            // System.out.printf(" port collison @ %d \n", serverPort);
+            // runServer(serverPort, strToSend, repetitions);
         }
     }
 }
@@ -85,12 +88,7 @@ class ClientHandler implements Runnable {
         this.strToSend = strToSend;
         this.repetitions = repetitions;
         t = new Thread(this);
-        exit = false;
         t.start();
-    }
-
-    public void stop() {
-        exit = true;
     }
 
     @Override
@@ -105,7 +103,7 @@ class ClientHandler implements Runnable {
     // ever.
     public void run() {
         try {
-            while (!exit) {
+            while (!Thread.interrupted()) {
 
                 OutputStream outputStream = clientSocket.getOutputStream();
                 for (int i = 0; i < repetitions; i++) {
@@ -123,17 +121,12 @@ class ClientHandler implements Runnable {
 
                 // The last transmission without sleep
                 // outputStream.write(strToSend.getBytes());
-                System.out.println("111111111111111");
-                clientSocket.close();
-                System.out.println("2222222222222222");
-                // Server.clientCount--;
-                System.out.printf(" count client threads decrement %d \n", Server.clientCount);
-                clientSocket.close();
                 System.out.printf(" Close socket ");
-                t.join();
-                System.out.printf(" Close threads ");
+                clientSocket.close();
+                System.out.printf(" count client threads decrement %d \n", Server.clientCount);
                 Server.clientCount--;
-                return;
+                System.out.printf(" Close threads ");
+                t.interrupt();
             }
         } catch (IOException | InterruptedException e) {
             System.out.println("333333333333333");
