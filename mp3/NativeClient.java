@@ -8,48 +8,40 @@ public class NativeClient {
     public static int pointer = 0;
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter server ip: ");
-        String serverIp = scanner.next();
-        serverIp = "127.0.0.1";
 
-        System.out.print("Enter server port ");
-        int serverPort = scanner.nextInt();
-        serverPort = 51123;
+        // Scanner scanner = new Scanner(System.in);
+        // System.out.print("Enter server ip: ");
+        // String serverIp = scanner.next();
+        // serverIp = "127.0.0.1";
 
+        // System.out.print("Enter server port ");
+        // int serverPort = scanner.nextInt();
+        // serverPort = 51123;
+        // scanner.close();
+
+        String serverIp = "127.0.0.1";
+        int serverPort = 51123;
+        runConnect(serverIp, serverPort);
+    }
+
+    public static void runConnect(String IP, int serverPort) {
+        System.out.printf("Server Port is %s ", serverPort);
         String modifiedSentence;
         // BufferedReader inFromUser = new BufferedReader(new
         // InputStreamReader(System.in));
         try {
-            Socket clientSocket = new Socket(serverIp, serverPort);
-            // InputStreamReader inFromServer = new
-            // InputStreamReader(clientSocket.getInputStream());
-            // BufferedReader inFromServer = new BufferedReader(new
-            // InputStreamReader(clientSocket.getInputStream()));
-            // DataOutputStream fromServer = new
-            // DataInputStream(clientSocket.getInputStream());
-            // InputStreamReader readInputStream = new
-            // InputStreamReader(clientSocket.getInputStream());
-            // char [] cbuf;
-            // int off = 0;
-
-            // BufferedReader inFromServer = new BufferedReader(new
-            // InputStreamReader(clientSocket.getInputStream()));
+            Socket clientSocket = new Socket(IP, serverPort);
             int find = -1;
             while (find == -1) {
                 modifiedSentence = processTransmission(clientSocket.getInputStream(), pointer);
                 pointer += modifiedSentence.length();
                 System.out.println("FROM SERVER: " + modifiedSentence);
                 find = modifiedSentence.indexOf('\n');
-                // System.out.println("find break! " + find);
             }
-
             clientSocket.close();
-
         } catch (IOException e) {
-            e.printStackTrace();
+            runConnect(IP, serverPort + 1);
         }
-        scanner.close();
     }
 
     public static String processTransmission(InputStream inputStream, int pointer) throws IOException {

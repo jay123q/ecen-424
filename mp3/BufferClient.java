@@ -4,18 +4,29 @@ import java.util.Scanner;
 
 public class BufferClient {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter server ip: ");
-        String serverIp = scanner.next();
-        serverIp = "127.0.0.1";
+        /*
+         * 
+         * Scanner scanner = new Scanner(System.in);
+         * System.out.print("Enter server ip: ");
+         * String serverIp = scanner.next();
+         * 
+         * System.out.print("Enter server port ");
+         * int serverPort = scanner.nextInt();
+         * 
+         * scanner.close();
+         */
+        String serverIp = "127.0.0.1";
+        int serverPort = 51123;
+        runConnect(serverIp, serverPort);
+    }
 
-        System.out.print("Enter server port ");
-        int serverPort = scanner.nextInt();
-        serverPort = 51123;
-
+    public static void runConnect(String IP, int serverPort) {
+        System.out.printf("Server Port is %s \n", serverPort);
         String modifiedSentence;
+        // BufferedReader inFromUser = new BufferedReader(new
+        // InputStreamReader(System.in));
         try {
-            Socket clientSocket = new Socket(serverIp, serverPort);
+            Socket clientSocket = new Socket(IP, serverPort + 1);
 
             BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             modifiedSentence = inFromServer.readLine();
@@ -23,9 +34,8 @@ public class BufferClient {
             clientSocket.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getStackTrace();
+            runConnect(IP, serverPort + 1);
         }
-        scanner.close();
     }
-
 }

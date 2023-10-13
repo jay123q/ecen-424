@@ -3,49 +3,69 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Server {
     public static int clientCount = 0;
+    public static List<Integer> PortCheckList = new ArrayList<Integer>();
 
     public static void main(String[] args) {
-        System.out.println(args);
-        Scanner scanner = new Scanner(System.in);
+        //
+        //
+        // System.out.println(args);
+        // Scanner scanner = new Scanner(System.in);
+        //
+        // System.out.print("Enter server port: ");
+        // int serverPort = scanner.nextInt();
+        // serverPort = 51123;
+        //
+        // System.out.print("Enter the maximum number of clients: ");
+        // System.out.print("Enter the string to transmit: ");
+        // int maxClients = scanner.nextInt();
+        // String strToSend = scanner.next();
+        //
+        // System.out.print("Enter the number of repetitions: ");
+        // int repetitions = scanner.nextInt();
+        // System.out.println(
+        // "Server listening on port " + serverPort + " for a maximum of " + maxClients
+        // + " clients.");
+        // scanner.close();
+        //
 
-        System.out.print("Enter server port: ");
-        int serverPort = scanner.nextInt();
-        serverPort = 51123;
+        String strToSend = "12,";
+        int serverPort = 51123;
+        int maxClients = 10;
+        int repetitions = 30;
+        while (clientCount < maxClients) {
+            runServer(serverPort, strToSend, repetitions);
 
-        System.out.print("Enter the maximum number of clients: ");
-        int maxClients = scanner.nextInt();
-        System.out.print("Enter the string to transmit: ");
-        String strToSend = scanner.next();
+        }
+    }
 
-        System.out.print("Enter the number of repetitions: ");
-        int repetitions = scanner.nextInt();
-        System.out.println(
-                "Server listening on port " + serverPort + " for a maximum of " + maxClients + " clients.");
+    public static void runServer(int serverPort, String strToSend, int repetitions) {
 
         try {
+            System.out.println("Server Port is: ");
+            System.out.println(serverPort);
+            clientCount++;
 
-            while (true) {
-                if (clientCount < maxClients) {
-                    ServerSocket serverSocket = new ServerSocket(serverPort);
-                    clientCount++;
-                    Socket clientSocket = serverSocket.accept();
-                    System.out.println("Accepted connection from " + clientSocket.getInetAddress());
-                    ClientHandler clientHandler = new ClientHandler(clientSocket, strToSend, repetitions);
-                    new Thread(clientHandler).start();
-                    System.out.println("\n\n ended thread currently running clients = ");
-                    System.out.println(clientCount);
-                    System.out.println("\n\n");
-                }
-
-            }
+            ServerSocket serverSocket = new ServerSocket(serverPort);
+            // PortCheckList.add(serverPort);
+            Socket clientSocket = serverSocket.accept();
+            System.out.println("Accepted connection from " + clientSocket.getInetAddress());
+            ClientHandler clientHandler = new ClientHandler(clientSocket, strToSend, repetitions);
+            new Thread(clientHandler).start();
+            System.out.println("\n\n ended thread currently running clients = ");
+            System.out.println(clientCount);
+            System.out.println("\n\n");
         } catch (IOException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            System.out.println(" address error caught ");
+            System.out.println(serverPort);
+            runServer(serverPort + 1, strToSend, repetitions);
         }
-        scanner.close();
     }
 }
 
@@ -61,10 +81,6 @@ class ClientHandler implements Runnable {
         this.repetitions = repetitions;
     }
 
-    public boolean getRunning() {
-        return running;
-    }
-
     @Override
     // hi josh here https://www.geeksforgeeks.org/overriding-in-java/#
     // i barely understand what this does more than parroting what geeks for geeks
@@ -78,7 +94,6 @@ class ClientHandler implements Runnable {
     public void run() {
         try {
             OutputStream outputStream = clientSocket.getOutputStream();
-            running = true;
             for (int i = 0; i < repetitions; i++) {
                 System.out.println(i);
                 if (i == repetitions - 1) {
@@ -94,11 +109,12 @@ class ClientHandler implements Runnable {
 
             // The last transmission without sleep
             // outputStream.write(strToSend.getBytes());
-
+            System.out.println("111111111111111");
             clientSocket.close();
-            running = false;
+            System.out.println("2222222222222222");
             Server.clientCount--;
         } catch (IOException | InterruptedException e) {
+            System.out.println("333333333333333");
             e.printStackTrace();
         }
     }
