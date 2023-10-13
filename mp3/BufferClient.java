@@ -26,7 +26,7 @@ public class BufferClient {
         // BufferedReader inFromUser = new BufferedReader(new
         // InputStreamReader(System.in));
         try {
-            Socket clientSocket = new Socket(IP, serverPort + 1);
+            Socket clientSocket = new Socket(IP, serverPort);
 
             BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             modifiedSentence = inFromServer.readLine();
@@ -35,6 +35,7 @@ public class BufferClient {
 
         } catch (IOException e) {
             e.getStackTrace();
+            System.out.printf(" The new modified server port is %d \n", serverPort + 1);
             runConnect(IP, serverPort + 1);
         }
     }

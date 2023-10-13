@@ -21,16 +21,23 @@ public class NativeClient {
 
         String serverIp = "127.0.0.1";
         int serverPort = 51123;
-        runConnect(serverIp, serverPort);
+        while (true) {
+            try {
+                Socket clientSocket = new Socket(serverIp, serverPort);
+                runConnect(clientSocket, serverIp, serverPort);
+                break;
+            } catch (IOException e) {
+                serverPort++;
+            }
+        }
     }
 
-    public static void runConnect(String IP, int serverPort) {
+    public static void runConnect(Socket clientSocket, String IP, int serverPort) {
         System.out.printf("Server Port is %s ", serverPort);
         String modifiedSentence;
         // BufferedReader inFromUser = new BufferedReader(new
         // InputStreamReader(System.in));
         try {
-            Socket clientSocket = new Socket(IP, serverPort);
             int find = -1;
             while (find == -1) {
                 modifiedSentence = processTransmission(clientSocket.getInputStream(), pointer);
@@ -40,7 +47,8 @@ public class NativeClient {
             }
             clientSocket.close();
         } catch (IOException e) {
-            runConnect(IP, serverPort + 1);
+            runConnect(clientSocket, IP, serverPort + 1);
+
         }
     }
 
