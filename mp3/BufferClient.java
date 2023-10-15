@@ -34,7 +34,8 @@ public class BufferClient {
             clientSocket.close();
 
         } catch (IOException e) {
-            e.getStackTrace();
+            System.out.println(" connection refused, OR you are running sockets too fast \n");
+            // e.getStackTrace();
             // System.out.printf(" The new modified server port is %d \n", serverPort + 1);
             // runConnect(IP, serverPort);
         }

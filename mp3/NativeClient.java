@@ -25,10 +25,12 @@ public class NativeClient {
             try {
                 Socket clientSocket = new Socket(serverIp, serverPort);
                 runConnect(clientSocket, serverIp, serverPort);
-                // clientSocket.close();
+
                 break;
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println(" connection refused, OR you are running sockets too fast \n");
+
+                // e.printStackTrace();
                 // serverPort++;
             }
         }
@@ -47,9 +49,11 @@ public class NativeClient {
                 System.out.println("FROM SERVER: " + modifiedSentence);
                 find = modifiedSentence.indexOf('\n');
             }
+            clientSocket.close();
         } catch (IOException e) {
             // runConnect(clientSocket, IP, serverPort++);
-            e.printStackTrace();
+            // e.printStackTrace();
+            System.out.println(" connection refused, OR you are running sockets too fast \n");
 
         }
     }
