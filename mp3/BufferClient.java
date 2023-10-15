@@ -35,8 +35,8 @@ public class BufferClient {
 
         } catch (IOException e) {
             e.getStackTrace();
-            System.out.printf(" The new modified server port is %d \n", serverPort + 1);
-            runConnect(IP, serverPort);
+            // System.out.printf(" The new modified server port is %d \n", serverPort + 1);
+            // runConnect(IP, serverPort);
         }
     }
 }

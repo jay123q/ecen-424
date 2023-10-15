@@ -25,15 +25,17 @@ public class NativeClient {
             try {
                 Socket clientSocket = new Socket(serverIp, serverPort);
                 runConnect(clientSocket, serverIp, serverPort);
+                // clientSocket.close();
                 break;
             } catch (IOException e) {
-                serverPort++;
+                e.printStackTrace();
+                // serverPort++;
             }
         }
     }
 
     public static void runConnect(Socket clientSocket, String IP, int serverPort) {
-        System.out.printf("Server Port is %s ", serverPort);
+        System.out.printf("Server Port is %s \n", serverPort);
         String modifiedSentence;
         // BufferedReader inFromUser = new BufferedReader(new
         // InputStreamReader(System.in));
@@ -45,9 +47,9 @@ public class NativeClient {
                 System.out.println("FROM SERVER: " + modifiedSentence);
                 find = modifiedSentence.indexOf('\n');
             }
-            clientSocket.close();
         } catch (IOException e) {
             // runConnect(clientSocket, IP, serverPort++);
+            e.printStackTrace();
 
         }
     }

@@ -36,19 +36,23 @@ public class Server {
 
         String strToSend = "12,";
         int serverPort = 51123;
-        int maxClients = 10;
-        int repetitions = 10;
+        int maxClients = 2;
+        int repetitions = 20;
+        int busyPrintHold = 0;
+        boolean printSupression = true;
         while (true) {
 
             while (clientCount < maxClients) {
-                // System.out.printf(" the amount of clients BEFORE threads %d \n",
-                // clientCount);
                 runServer(serverPort, strToSend, repetitions);
-                // System.out.printf(" the amount of clients AFTER threads %d \n", clientCount);
+                printSupression = true;
 
             }
-            System.out.println(" figure where stralled \n ");
-            serverPort++;
+            if (printSupression) {
+
+                System.out.println(" waiting for threads \n ");
+                printSupression = false;
+            }
+            System.out.printf(" busy print to hold thread here, this will be winnowed otherwise %d \n", clientCount);
         }
     }
 
@@ -57,13 +61,11 @@ public class Server {
         try {
             // System.out.printf("Server Port is: %d \n", serverPort);
             ServerSocket serverSocket = new ServerSocket(serverPort);
-            // PortCheckList.add(serverPort);
-            serverPort++;
             Socket clientSocket = serverSocket.accept();
-            clientCount++;
             // System.out.printf(" count client threads increment %d \n", clientCount);
             System.out.println("Accepted connection from " + clientSocket.getInetAddress());
             ClientHandler clientHandler = new ClientHandler(clientSocket, strToSend, repetitions);
+            // System.out.printf(" do we return \n");
             // clientHandler.run();
             // new Thread(clientHandler).start();
             // System.out.printf("\n\n ended thread currently running clients = %d \n\n",
@@ -103,32 +105,33 @@ class ClientHandler implements Runnable {
     // ever.
     public void run() {
         try {
-            while (!Thread.interrupted()) {
-
-                OutputStream outputStream = clientSocket.getOutputStream();
-                for (int i = 0; i < repetitions; i++) {
-                    System.out.println(i);
-                    if (i == repetitions - 1) {
-                        String modifiedMessage = strToSend + '\n';
-                        // System.out.println("string to send! " + strToSend);
-                        outputStream.write(modifiedMessage.getBytes());
-                    } else {
-                        // System.out.println("string to send! " + strToSend);
-                        outputStream.write(strToSend.getBytes());
-                    }
-                    Thread.sleep(1000); // Sleep for one second
+            Server.clientCount++;
+            OutputStream outputStream = clientSocket.getOutputStream();
+            for (int i = 0; i < repetitions; i++) {
+                System.out.println(i);
+                if (i == repetitions - 1) {
+                    String modifiedMessage = strToSend + '\n';
+                    // System.out.println("string to send! " + strToSend);
+                    outputStream.write(modifiedMessage.getBytes());
+                } else {
+                    // System.out.println("string to send! " + strToSend);
+                    outputStream.write(strToSend.getBytes());
                 }
-
-                // The last transmission without sleep
-                // outputStream.write(strToSend.getBytes());
-                System.out.printf(" Close socket ");
-                clientSocket.close();
-                System.out.printf(" count client threads decrement %d \n", Server.clientCount);
-                Server.clientCount--;
-                System.out.printf(" Close threads ");
-                t.interrupt();
+                Thread.sleep(1000); // Sleep for one second
             }
-        } catch (IOException | InterruptedException e) {
+
+            // The last transmission without sleep
+            // outputStream.write(strToSend.getBytes());
+
+            System.out.printf(" Close socket ");
+            clientSocket.close();
+            Server.clientCount--;
+            System.out.printf(" Running threads left is %d \n", Server.clientCount);
+            // System.out.printf(" Close threads ");
+
+        } catch (IOException |
+
+                InterruptedException e) {
             System.out.println("333333333333333");
             e.printStackTrace();
         }
