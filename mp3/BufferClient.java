@@ -15,16 +15,16 @@ public class BufferClient {
          * 
          * scanner.close();
          */
-        String serverIp = "127.0.0.1";
-        int serverPort = 51123;
+        // String serverIp = "127.0.0.1";
+        // int serverPort = 51123;
+        String serverIp = args[0];
+        int serverPort = Integer.parseInt(args[1]);
         runConnect(serverIp, serverPort);
     }
 
     public static void runConnect(String IP, int serverPort) {
         System.out.printf("Server Port is %s \n", serverPort);
         String modifiedSentence;
-        // BufferedReader inFromUser = new BufferedReader(new
-        // InputStreamReader(System.in));
         try {
             Socket clientSocket = new Socket(IP, serverPort);
 
@@ -35,9 +35,6 @@ public class BufferClient {
 
         } catch (IOException e) {
             System.out.println(" connection refused, OR you are running sockets too fast \n");
-            // e.getStackTrace();
-            // System.out.printf(" The new modified server port is %d \n", serverPort + 1);
-            // runConnect(IP, serverPort);
         }
     }
 }

@@ -9,18 +9,12 @@ public class NativeClient {
 
     public static void main(String[] args) {
 
-        // Scanner scanner = new Scanner(System.in);
-        // System.out.print("Enter server ip: ");
-        // String serverIp = scanner.next();
         // serverIp = "127.0.0.1";
-
-        // System.out.print("Enter server port ");
-        // int serverPort = scanner.nextInt();
         // serverPort = 51123;
-        // scanner.close();
+        
 
-        String serverIp = "127.0.0.1";
-        int serverPort = 51123;
+        String serverIp = args[0];
+        int serverPort = Integer.parseInt(args[1]);
         while (true) {
             try {
                 Socket clientSocket = new Socket(serverIp, serverPort);
@@ -39,8 +33,6 @@ public class NativeClient {
     public static void runConnect(Socket clientSocket, String IP, int serverPort) {
         System.out.printf("Server Port is %s \n", serverPort);
         String modifiedSentence;
-        // BufferedReader inFromUser = new BufferedReader(new
-        // InputStreamReader(System.in));
         try {
             int find = -1;
             while (find == -1) {
@@ -51,8 +43,6 @@ public class NativeClient {
             }
             clientSocket.close();
         } catch (IOException e) {
-            // runConnect(clientSocket, IP, serverPort++);
-            // e.printStackTrace();
             System.out.println(" connection refused, OR you are running sockets too fast \n");
 
         }
@@ -70,8 +60,6 @@ public class NativeClient {
             return "";
         }
         receivedData = new String(buffer, 0, bytesRead);
-        // System.out.println("Received: " + receivedData);
-        // Process the received data as needed
         return receivedData;
 
     }
