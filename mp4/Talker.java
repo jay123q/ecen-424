@@ -24,8 +24,9 @@ public class Talker {
             // Get user input
             System.out.print("Enter message (up to 50 characters): ");
             String input = System.console().readLine();
-            if (input.length() < 50) {
-                System.out.print(" less than 50 retry ");
+            if (input.length() > 50) {
+                System.out.print(" enter less than 50 ");
+                return;
             }
             /*
             */
