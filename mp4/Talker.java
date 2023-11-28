@@ -3,31 +3,34 @@ import java.util.concurrent.TimeUnit;
 
 public class Talker {
     public static void main(String[] args) {
-        /*
-         * if (args.length != 3) {
-         * System.out.println("Usage: Talker <listenerIP> <talkerPort> <listenerPort>");
-         * return;
-         * }
-         * 
-         * String listenerIP = args[0];
-         * int talkerPort = Integer.parseInt(args[1]);
-         * int listenerPort = Integer.parseInt(args[2]);
-         */
-        String listenerIP = "127.0.0.1";
-        int talkerPort = 22345;
-        int listenerPort = 22346;
+
+        if (args.length != 3) {
+            System.out.println("Usage: Talker <listenerIP> <talkerPort> <listenerPort>");
+            return;
+        }
+
+        String listenerIP = args[0];
+        int talkerPort = Integer.parseInt(args[1]);
+        int listenerPort = Integer.parseInt(args[2]);
+
+        // String listenerIP = "127.0.0.1";
+        // int talkerPort = 22345;
+        // int listenerPort = 22346;
 
         try {
             DatagramSocket socket = new DatagramSocket(talkerPort);
             InetAddress listenerAddress = InetAddress.getByName(listenerIP);
 
             // Get user input
+            System.out.print("Enter message (up to 50 characters): ");
+            String input = System.console().readLine();
+            if (input.length() < 50) {
+                System.out.print(" less than 50 retry ");
+            }
             /*
-             * System.out.print("Enter message (up to 50 characters): ");
-             * String input = System.console().readLine();
-             */
+            */
             // String input = "1123123123123123123";
-            String input = "11111111112222222222333333333344444444445555555555";
+            // String input = "11111111112222222222333333333344444444445555555555";
             int sizeOfChunk = (int) Math.ceil((double) input.length() / 5);
             // Break the message into 10-character chunks
             System.out.printf("SIZE OF CHUNK %d\n", sizeOfChunk);

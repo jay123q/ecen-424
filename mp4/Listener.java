@@ -3,16 +3,16 @@ import java.util.Random;
 
 public class Listener {
     public static void main(String[] args) {
-        /*
-         * if (args.length != 2) {
-         * System.out.println("Usage: Listener <talkerPort> <listenerPort>");
-         * return;
-         * }
-         * int talkerPort = Integer.parseInt(args[0]);
-         * int listenerPort = Integer.parseInt(args[1]);
-         */
-        int talkerPort = 22345;
-        int listenerPort = 22346;
+
+        if (args.length != 2) {
+            System.out.println("Usage: Listener <talkerPort> <listenerPort>");
+            return;
+        }
+        int talkerPort = Integer.parseInt(args[0]);
+        int listenerPort = Integer.parseInt(args[1]);
+
+        // int talkerPort = 22345;
+        // int listenerPort = 22346;
         try {
             DatagramSocket socket = new DatagramSocket(listenerPort);
             String finalData = "";
